@@ -7,12 +7,21 @@ export const databaseProviders: Provider[] = [
   {
     provide: DATABASE_PROVIDER,
     useFactory: async () => {
-      return await mysql.createConnection({
-        host: 'localhost',
-        user: 'iotapp_user',          // Nuevo usuario
-        password: 'ContrasenaSegura123!', // Nueva contraseña
-        database: 'iotapp_bd',
-      });
+      try {
+        console.log('Intentando conectar a la base de datos...');
+        const connection = await mysql.createConnection({
+          host: 'localhost',
+          port: 3306,
+          user: 'root',
+          password: '',
+          database: 'iotapp_bd',
+        });
+        console.log('Conexión exitosa a la base de datos');
+        return connection;
+      } catch (error) {
+        console.error('Error al conectar a la base de datos:', error);
+        throw error;
+      }
     },
   },
 ];
